@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RtTest</string>
+    <string name="menu_userList">пользователи</string>
+    <string name="menu_about">о приложении</string>
 </resources>

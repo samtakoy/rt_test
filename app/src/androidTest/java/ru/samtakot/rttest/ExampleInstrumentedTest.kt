@@ -17,7 +17,7 @@ import org.junit.Assert.*
 class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
-        // Context of the app under test.
+        // Context of the main_graph under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("ru.samtakot.rttest", appContext.packageName)
     }
