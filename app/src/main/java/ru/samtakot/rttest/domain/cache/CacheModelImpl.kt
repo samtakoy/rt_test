@@ -92,9 +92,12 @@ class CacheModelImpl @Inject constructor(
     override fun observeUsers(): Flowable<List<User>> = cacheRepository.getUsers()
 
     private fun changeCacheStatus(newStatus: CacheStatus){
-        Log.d(TAG, "* changeCacheStatus:${newStatus.name}")
-        cacheStatus = newStatus
-        networkBusyStatus.onNext(newStatus.isNetworkBusy)
+
+        if(cacheStatus != newStatus) {
+            Log.d(TAG, "* changeCacheStatus:${newStatus.name}")
+            cacheStatus = newStatus
+            networkBusyStatus.onNext(newStatus.isNetworkBusy)
+        }
     }
 
     override fun retrieveMoreEmployees() {
@@ -102,9 +105,13 @@ class CacheModelImpl @Inject constructor(
         if(cacheStatus != CacheStatus.UNCOMPLETED){
             return
         }
+
+
         changeCacheStatus(CacheStatus.DATA_RETRIEVING)
 
         val pageNum = if (cacheValidator.hasCacheRecord) cacheValidator.pagesLoaded+1 else 1
+
+        Log.d(TAG, "*** data retrieving, pageNum:${pageNum}")
 
         currentRequests.clear()
         currentRequests.add(
@@ -119,7 +126,7 @@ class CacheModelImpl @Inject constructor(
 
     private fun onRetrieveEmployeesComplete(resultPage: UserPage) {
 
-        Log.d(TAG, "page loaded, ${resultPage.page}/${resultPage.totalPages}")
+        Log.d(TAG, "*** page loaded, ${resultPage.page}/${resultPage.totalPages}")
 
         if(!cacheValidator.verifyPageNumbers(resultPage.page, resultPage.totalPages)){
             cacheValidator.invalidate()
