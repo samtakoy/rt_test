@@ -7,7 +7,6 @@ import ru.samtakot.rttest.domain.reps.RemoteUserRepository
 import javax.inject.Inject
 
 class RemoteUserRepositoryImpl @Inject constructor(
-    @Inject
     var api: RequestApi
 ): RemoteUserRepository {
 
