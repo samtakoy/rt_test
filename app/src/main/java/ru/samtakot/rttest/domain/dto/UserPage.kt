@@ -10,7 +10,9 @@ class UserPage(
     val totalPages: Int,
     val users: List<User>
 ) {
+    fun isLast(): Boolean = page == totalPages
 
-
+    val userIds: List<Int>
+        get() = users.map { it.id }
 
 }

@@ -1,5 +1,6 @@
 package ru.samtakot.rttest.data.local.cache
 
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import ru.samtakot.rttest.data.local.cache.db.CacheDatabase
 import ru.samtakot.rttest.data.local.cache.db.UserEntity
@@ -22,11 +23,16 @@ class UserCacheRepositoryImpl @Inject constructor(
     override fun getUsersCountFromIdList(idList: List<Int>): Flowable<Int> =
         db.usersDao().getUserCountFromIdList(idList)
 
-    override fun addData(users: List<User>) {
-        db.usersDao().addUsers(users.map { UserEntity.fromDomainEntity(it) })
-    }
+    override fun addData(users: List<User>): Completable =
+        Completable.fromCallable {
+            db.usersDao().addUsers(users.map { UserEntity.fromDomainEntity(it) })
+            return@fromCallable true
+        }
 
-    override fun clearEmployees() {
-        db.usersDao().clearUsers()
-    }
+
+    override fun clearUsers(): Completable =
+        Completable.fromCallable {
+            db.usersDao().clearUsers()
+            return@fromCallable true
+        }
 }
