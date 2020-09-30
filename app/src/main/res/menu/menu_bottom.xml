@@ -10,5 +10,7 @@
         android:id="@+id/about"
         android:icon="@drawable/ic_about_white_24dp"
         android:title="@string/menu_about"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:menuCategory="secondary"
+        />
 </menu>
