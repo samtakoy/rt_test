@@ -3,8 +3,6 @@ package ru.samtakot.rttest.presentation.list
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.*
-import androidx.navigation.NavDirections
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller

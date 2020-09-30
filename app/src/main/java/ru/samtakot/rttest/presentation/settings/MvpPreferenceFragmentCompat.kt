@@ -1,8 +1,6 @@
 package ru.samtakot.rttest.presentation.settings
 
 import android.os.Bundle
-import androidx.annotation.ContentView
-import androidx.annotation.LayoutRes
 import androidx.preference.PreferenceFragmentCompat
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder

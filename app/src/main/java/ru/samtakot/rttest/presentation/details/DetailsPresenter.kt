@@ -5,7 +5,6 @@ import io.reactivex.disposables.CompositeDisposable
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import ru.samtakot.rttest.R
-import ru.samtakot.rttest.domain.cache.CacheModel
 import ru.samtakot.rttest.domain.reps.UserCacheRepository
 import ru.samtakot.rttest.extensions.ioToMain
 import javax.inject.Inject
