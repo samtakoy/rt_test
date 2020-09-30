@@ -92,4 +92,8 @@ dependencies {
 
     // material
     implementation "com.google.android.material:material:$material_version"
+
+
+    // google app service
+    implementation 'com.google.android.gms:play-services-base:17.4.0'
 }
