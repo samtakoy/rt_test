@@ -17,6 +17,9 @@ class UserCacheRepositoryImpl @Inject constructor(
         db.usersDao().getAllUsers()
             .map {list -> list.map { it.toDomainEntity()} }
 
+    override fun getUser(userId: Int): Flowable<User> =
+        db.usersDao().getUser(userId).map{ it.toDomainEntity() }
+
     override fun getUsersCount(): Flowable<Int> =
         db.usersDao().getUserCount()
 

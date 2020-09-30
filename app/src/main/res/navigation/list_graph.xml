@@ -7,9 +7,22 @@
     <fragment
         android:id="@+id/userListFragment"
         android:name="ru.samtakot.rttest.presentation.list.ListFragment"
-        android:label="@string/menu_userList" />
+        android:label="@string/menu_userList" >
+        <action
+            android:id="@+id/to_userDetails"
+            app:destination="@id/userDetailsFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit"
+            />
+    </fragment>
     <fragment
         android:id="@+id/userDetailsFragment"
         android:name="ru.samtakot.rttest.presentation.details.DetailsFragment"
-        android:label="DetailsFragment" />
+        android:label="DetailsFragment" >
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

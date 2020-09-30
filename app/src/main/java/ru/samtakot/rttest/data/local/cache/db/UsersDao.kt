@@ -11,6 +11,9 @@ interface UsersDao {
     @Query("SELECT * FROM users")
     fun getAllUsers(): Flowable<List<UserEntity>>
 
+    @Query("SELECT * FROM users WHERE id=:userId")
+    fun getUser(userId: Int): Flowable<UserEntity>
+
     @Query("SELECT count(*) FROM users")
     fun getUserCount(): Flowable<Int>
 

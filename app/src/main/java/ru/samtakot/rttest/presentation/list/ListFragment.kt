@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -78,8 +81,8 @@ class ListFragment : MvpAppCompatFragment(), ListView{
     }
 
     private fun createAdapter(): UsersListAdapter {
-        return UsersListAdapter{ view, employee ->
-            //tryScrollOneItemDown()
+        return UsersListAdapter{ _, user ->
+            presenter.onUserItemClick(user.id)
         }
     }
 
@@ -133,5 +136,12 @@ class ListFragment : MvpAppCompatFragment(), ListView{
         smoothScroller.targetPosition = targetPos
         return smoothScroller
     }
+
+    override fun navigateToUser(userId: Int) {
+        findNavController().navigate(
+            ListFragmentDirections.toUserDetails(userId)
+        )
+    }
+
 
 }

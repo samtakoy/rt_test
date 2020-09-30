@@ -67,4 +67,8 @@ class ListPresenter(
     fun onUiGetMoreUsers() {
         cache.retrieveMoreEmployees()
     }
+
+    fun onUserItemClick(userId: Int) {
+        viewState.navigateToUser(userId)
+    }
 }
