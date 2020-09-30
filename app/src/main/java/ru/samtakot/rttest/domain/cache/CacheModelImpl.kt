@@ -49,7 +49,7 @@ class CacheModelImpl @Inject constructor(
             changeCacheStatus(CacheStatus.SYNCHRONIZED)
         } else {
             changeCacheStatus(CacheStatus.UNCOMPLETED)
-            retrieveMoreEmployees()
+            retrieveMoreUsers()
         }
     }
 
@@ -72,7 +72,7 @@ class CacheModelImpl @Inject constructor(
         }
     }
 
-    override fun retrieveMoreEmployees() {
+    override fun retrieveMoreUsers() {
 
         if(cacheStatus != CacheStatus.UNCOMPLETED){
             return
@@ -86,16 +86,16 @@ class CacheModelImpl @Inject constructor(
 
         currentRequests.clear()
         currentRequests.add(
-            remoteRepository.retrieveMoreEmployees(pageNum)
+            remoteRepository.retrieveMoreUsers(pageNum)
                 .io()
                 .subscribe(
-                    {userPage -> onRetrieveEmployeesComplete(userPage!!)},
-                    {throwable -> onRetrieveEmployeesError(throwable)}
+                    {userPage -> onRetrieveUsersComplete(userPage!!)},
+                    {throwable -> onRetrieveUsersError(throwable)}
                 )
         )
     }
 
-    private fun onRetrieveEmployeesComplete(resultPage: UserPage) {
+    private fun onRetrieveUsersComplete(resultPage: UserPage) {
 
         Log.d(TAG, "*** page loaded, ${resultPage.page}/${resultPage.totalPages}")
 
@@ -121,7 +121,7 @@ class CacheModelImpl @Inject constructor(
                     },
                     {throwable ->
                         cacheValidator.invalidate()
-                        onRetrieveEmployeesHandleError(throwable)
+                        onRetrieveUsersHandleError(throwable)
                     }
                 )
         )
@@ -136,20 +136,28 @@ class CacheModelImpl @Inject constructor(
             cacheRepository.addData(users)
     }
 
-    private fun onRetrieveEmployeesHandleError(throwable: Throwable) {
-        Log.e(TAG, "onRetrieveEmployeesError", throwable)
+    private fun onRetrieveUsersHandleError(throwable: Throwable) {
+        Log.e(TAG, "onRetrieveUsersError", throwable)
 
         errors.onNext(CacheError(R.string.cache_err_cant_handle_request))
-        changeCacheStatus(CacheStatus.UNCOMPLETED)
+        processStatusAfterUserGettingError()
     }
 
-    private fun onRetrieveEmployeesError(throwable: Throwable) {
-        Log.e(TAG, "onRetrieveEmployeesError", throwable)
+    private fun onRetrieveUsersError(throwable: Throwable) {
+        Log.e(TAG, "onRetrieveUsersError", throwable)
 
         errors.onNext(CacheError(R.string.cache_err_cant_reuest))
-        changeCacheStatus(CacheStatus.UNCOMPLETED)
+        processStatusAfterUserGettingError()
     }
-    
+
+    private fun processStatusAfterUserGettingError() {
+        if (cacheValidator.hasCacheRecord) {
+            changeCacheStatus(CacheStatus.UNCOMPLETED)
+        } else {
+            changeCacheStatus(CacheStatus.NOT_INITIALIZED)
+        }
+    }
+
     override fun invalidateDbCache(): Completable =
         Completable.fromCallable{
             cacheValidator.invalidate()

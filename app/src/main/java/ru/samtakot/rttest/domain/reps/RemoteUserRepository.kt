@@ -5,5 +5,5 @@ import ru.samtakot.rttest.domain.dto.UserPage
 
 interface RemoteUserRepository {
 
-    fun retrieveMoreEmployees(nextPageNum: Int): Observable<UserPage>
+    fun retrieveMoreUsers(nextPageNum: Int): Observable<UserPage>
 }

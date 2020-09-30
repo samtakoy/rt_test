@@ -10,7 +10,7 @@ class RemoteUserRepositoryImpl @Inject constructor(
     var api: RequestApi
 ): RemoteUserRepository {
 
-    override fun retrieveMoreEmployees(nextPageNum: Int): Observable<UserPage> {
+    override fun retrieveMoreUsers(nextPageNum: Int): Observable<UserPage> {
         return api.getUsers(nextPageNum)
             .map{it.toDomainEntity()}
     }

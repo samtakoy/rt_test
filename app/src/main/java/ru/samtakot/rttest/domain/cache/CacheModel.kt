@@ -11,7 +11,7 @@ interface CacheModel {
     fun observeNetworkBusyStatus(): Observable<Boolean>
     fun observeErrors(): Observable<CacheError>
     fun observeUsers(): Flowable<List<User>>
-    fun retrieveMoreEmployees()
+    fun retrieveMoreUsers()
 
     fun invalidateDbCache(): Completable
     fun clearDbCache(): Completable

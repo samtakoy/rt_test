@@ -64,7 +64,7 @@ class ListPresenter(
     }
 
     fun onUiGetMoreUsers() {
-        cache.retrieveMoreEmployees()
+        cache.retrieveMoreUsers()
     }
 
     fun onUserItemClick(userId: Int) {
