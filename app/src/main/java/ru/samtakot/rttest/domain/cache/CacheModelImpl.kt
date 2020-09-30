@@ -6,6 +6,7 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import ru.samtakot.rttest.R
 import ru.samtakot.rttest.domain.Locals
 import ru.samtakot.rttest.domain.TimestampHolder
@@ -29,7 +30,7 @@ class CacheModelImpl @Inject constructor(
 
     private var cacheStatus = CacheStatus.NOT_INITIALIZED
     private var networkBusyStatus: BehaviorSubject<Boolean> = BehaviorSubject.create()
-    private var errors: BehaviorSubject<CacheError> = BehaviorSubject.create()
+    private var errors: PublishSubject<CacheError> = PublishSubject.create()
     private val cacheValidator = CacheValidator(cacheSettings.expireIntervalSeconds, locals)
 
     private val currentRequests: CompositeDisposable = CompositeDisposable()
@@ -148,7 +149,7 @@ class CacheModelImpl @Inject constructor(
         errors.onNext(CacheError(R.string.cache_err_cant_reuest))
         changeCacheStatus(CacheStatus.UNCOMPLETED)
     }
-
+    
     override fun invalidateDbCache(): Completable =
         Completable.fromCallable{
             cacheValidator.invalidate()
