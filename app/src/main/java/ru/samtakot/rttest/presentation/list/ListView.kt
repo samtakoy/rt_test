@@ -24,4 +24,7 @@ interface ListView : MvpView{
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun navigateToUser(userId: Int)
 
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun navigateToSettings()
+
 }

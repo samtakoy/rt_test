@@ -23,8 +23,7 @@ class ListPresenter(
     private val observers: CompositeDisposable = CompositeDisposable()
 
     init{
-
-        cache.init()
+        cache.checkForInitialization()
         observeUpdates()
     }
 
@@ -71,4 +70,13 @@ class ListPresenter(
     fun onUserItemClick(userId: Int) {
         viewState.navigateToUser(userId)
     }
+
+    fun onUiSettingsClick() {
+        viewState.navigateToSettings()
+    }
+
+    fun onUiCheckCacheStatus(){
+        cache.checkForInitialization()
+    }
+
 }

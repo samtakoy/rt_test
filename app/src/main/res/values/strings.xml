@@ -13,4 +13,16 @@
 
     <string name="card_email_text">Email:  {0}</string>
     <string name="card_db_error">Ошибка при получении информауии о пользователе</string>
+
+    <string name="menu_item_settings">settings</string>
+
+    <string name="settings_invalidate_db_cache_title">Инвалидировать кеш базы</string>
+    <string name="settings_invalidate_db_cache_summary">Данные в баез кеша помечаются как устаревшие и при следующем запросе будут обновлены</string>
+    <string name="settings_clear_db_cache_title">Очистить кеш базы</string>
+    <string name="settings_clear_db_cache_summary">Инвалидирует и мгновенно очищает кеш базы</string>
+    <string name="settings_clear_glide_cache_title">Очистить кеш Glide</string>
+    <string name="settings_clear_glide_cache_summary">Очищает кеш Glide на диске и в памяти</string>
+    <string name="msg_settings_apply_success">Успешно</string>
+    <string name="msg_settings_apply_error">Что-то пошло не так</string>
+    <string name="settings_screen_title">Настройки</string>
 </resources>

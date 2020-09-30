@@ -14,7 +14,6 @@ import ru.samtakot.rttest.domain.entity.User
 import ru.samtakot.rttest.domain.reps.RemoteUserRepository
 import ru.samtakot.rttest.domain.reps.UserCacheRepository
 import ru.samtakot.rttest.extensions.io
-import ru.samtakot.rttest.extensions.ioToMain
 import javax.inject.Inject
 
 private const val TAG = "CacheModelImpl"
@@ -35,8 +34,8 @@ class CacheModelImpl @Inject constructor(
 
     private val currentRequests: CompositeDisposable = CompositeDisposable()
 
-    override fun init() {
-        if(cacheStatus == CacheStatus.NOT_INITIALIZED){
+    override fun checkForInitialization() {
+        if (cacheStatus == CacheStatus.NOT_INITIALIZED) {
             networkBusyStatus.onNext(false)
             cacheValidator.validateByTimestamp(timestampHolder.timestampSeconds)
             retrieveInitialData()
@@ -53,37 +52,8 @@ class CacheModelImpl @Inject constructor(
         }
     }
 
-    override fun clear() {
-
-        if(cacheStatus.isNetworkBusy){
-            errors.onNext(CacheError(R.string.cache_err_loading_in_progress))
-            return
-        }
-
-        val prevStatus = cacheStatus
-        changeCacheStatus(CacheStatus.DATA_RETRIEVING)
-
-        cacheValidator.invalidate()
-
-        currentRequests.clear()
-        currentRequests.add(
-            cacheRepository.clearUsers()
-                .io()
-                .subscribe(
-                    {
-                        changeCacheStatus(prevStatus)
-                        retrieveMoreEmployees()
-                    },
-                    {throwable ->
-                        changeCacheStatus(prevStatus)
-                        errors.onNext(CacheError(R.string.cache_err_cant_clear))
-                    }
-                )
-        )
-    }
-
     override fun observeNetworkBusyStatus(): Observable<Boolean>{
-        return networkBusyStatus.distinct()
+        return networkBusyStatus
     }
 
     override fun observeErrors(): Observable<CacheError> {
@@ -106,7 +76,6 @@ class CacheModelImpl @Inject constructor(
         if(cacheStatus != CacheStatus.UNCOMPLETED){
             return
         }
-
 
         changeCacheStatus(CacheStatus.DATA_RETRIEVING)
 
@@ -135,6 +104,7 @@ class CacheModelImpl @Inject constructor(
 
         if(resultPage.page > 1 && !cacheValidator.hasCacheRecord){
             // все перезапросить заново
+            changeCacheStatus(CacheStatus.UNCOMPLETED)
             retrieveInitialData()
             return
         }
@@ -178,4 +148,27 @@ class CacheModelImpl @Inject constructor(
         errors.onNext(CacheError(R.string.cache_err_cant_reuest))
         changeCacheStatus(CacheStatus.UNCOMPLETED)
     }
+
+    override fun invalidateDbCache(): Completable =
+        Completable.fromCallable{
+            cacheValidator.invalidate()
+        }
+
+    private fun resetCacheInitialization(): Completable =
+        Completable.fromCallable{
+            changeCacheStatus(CacheStatus.NOT_INITIALIZED)
+        }
+
+    override fun clearDbCache(): Completable {
+        if(cacheStatus.isNetworkBusy){
+            return Completable.error(Exception("network is busy"))
+        }
+        return invalidateDbCache()
+            .andThen(resetCacheInitialization())
+            .andThen(cacheRepository.clearUsers().io())
+    }
+
+
+
+
 }

@@ -96,4 +96,7 @@ dependencies {
 
     // google app service
     implementation 'com.google.android.gms:play-services-base:17.4.0'
+
+    // preferences
+    implementation "androidx.preference:preference:1.0.0"
 }

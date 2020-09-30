@@ -2,10 +2,7 @@ package ru.samtakot.rttest.presentation.list
 
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
+import android.view.*
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
@@ -42,6 +39,8 @@ class ListFragment : MvpAppCompatFragment(), ListView{
     override fun onCreate(savedInstanceState: Bundle?) {
         Di.appComponent.inject(this)
         super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -55,6 +54,12 @@ class ListFragment : MvpAppCompatFragment(), ListView{
         setupRecyclerView(view, recyclerViewAdapter)
 
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // for test
+        presenter.onUiCheckCacheStatus()
     }
 
     private fun setupRecyclerView(view: View, employeeListAdapter: UsersListAdapter) {
@@ -143,5 +148,24 @@ class ListFragment : MvpAppCompatFragment(), ListView{
         )
     }
 
+    override fun navigateToSettings() {
+        findNavController().navigate(
+            ListFragmentDirections.toSettings()
+        )
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_item_settings -> {
+                presenter.onUiSettingsClick()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

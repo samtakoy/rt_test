@@ -58,6 +58,7 @@ private val ITEM_COMPARATOR = object : DiffUtil.ItemCallback<User>() {
     }
 
     override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem == newItem
+        val booleanResult = oldItem == newItem
+        return booleanResult
     }
 }
