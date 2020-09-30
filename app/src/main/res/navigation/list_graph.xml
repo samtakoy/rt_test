@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/userListFragment"
         android:name="ru.samtakot.rttest.presentation.list.ListFragment"
-        android:label="ListFragment" />
+        android:label="@string/menu_userList" />
     <fragment
         android:id="@+id/userDetailsFragment"
         android:name="ru.samtakot.rttest.presentation.details.DetailsFragment"

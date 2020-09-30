@@ -7,5 +7,5 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="ru.samtakot.rttest.presentation.about.AboutFragment"
-        android:label="AboutFragment" />
+        android:label="@string/menu_about" />
 </navigation>

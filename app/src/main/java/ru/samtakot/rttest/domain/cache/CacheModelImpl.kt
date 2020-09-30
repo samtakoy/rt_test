@@ -13,6 +13,7 @@ import ru.samtakot.rttest.domain.dto.UserPage
 import ru.samtakot.rttest.domain.entity.User
 import ru.samtakot.rttest.domain.reps.RemoteUserRepository
 import ru.samtakot.rttest.domain.reps.UserCacheRepository
+import ru.samtakot.rttest.extensions.io
 import ru.samtakot.rttest.extensions.ioToMain
 import javax.inject.Inject
 
@@ -67,7 +68,7 @@ class CacheModelImpl @Inject constructor(
         currentRequests.clear()
         currentRequests.add(
             cacheRepository.clearUsers()
-                .ioToMain()
+                .io()
                 .subscribe(
                     {
                         changeCacheStatus(prevStatus)
@@ -89,7 +90,7 @@ class CacheModelImpl @Inject constructor(
         return errors
     }
 
-    override fun observeUsers(): Flowable<List<User>> = cacheRepository.getUsers()
+    override fun observeUsers(): Flowable<List<User>> = cacheRepository.getUsers().io()
 
     private fun changeCacheStatus(newStatus: CacheStatus){
 
@@ -116,7 +117,7 @@ class CacheModelImpl @Inject constructor(
         currentRequests.clear()
         currentRequests.add(
             remoteRepository.retrieveMoreEmployees(pageNum)
-                .ioToMain()
+                .io()
                 .subscribe(
                     {userPage -> onRetrieveEmployeesComplete(userPage!!)},
                     {throwable -> onRetrieveEmployeesError(throwable)}
@@ -141,7 +142,7 @@ class CacheModelImpl @Inject constructor(
         currentRequests.clear()
         currentRequests.add(
             observeUsersAdding(resultPage.users, !cacheValidator.hasCacheRecord)
-                .ioToMain()
+                .io()
                 .subscribe(
                     {
                         cacheValidator.onNewData(resultPage.page, resultPage.totalPages, timestampHolder.timestampSeconds)

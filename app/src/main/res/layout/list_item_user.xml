@@ -18,9 +18,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@id/avatar"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginLeft="8dp"
 
-        android:textSize="24sp"
+        android:textSize="20sp"
         />
 
     <TextView
@@ -29,6 +30,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@id/firstName"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginLeft="8dp"
 
         android:textSize="24sp"

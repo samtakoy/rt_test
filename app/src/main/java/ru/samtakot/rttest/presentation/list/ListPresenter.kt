@@ -1,5 +1,6 @@
 package ru.samtakot.rttest.presentation.list
 
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -39,6 +40,7 @@ class ListPresenter(
 
         observers.add(
             cache.observeNetworkBusyStatus()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if(it) viewState.showDataLoading() else viewState.hideDataLoading()
                 }
@@ -46,6 +48,7 @@ class ListPresenter(
 
         observers.add(
             cache.observeErrors()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     viewState.showMessage(it.errorTextId)
                 }
@@ -53,6 +56,7 @@ class ListPresenter(
 
         observers.add(
             cache.observeUsers()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     viewState.setData(it)
                 }

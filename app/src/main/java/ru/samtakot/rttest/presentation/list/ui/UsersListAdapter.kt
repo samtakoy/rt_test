@@ -24,6 +24,9 @@ class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         itemView.lastName.text = item.lastName
         Glide.with(itemView.context)
             .load(item.avatar)
+            .fitCenter()
+            .placeholder(R.drawable.ic_person_gray_24dp)
+            .error(R.drawable.ic_err_person_gray_24dp)
             .into(itemView.avatar)
     }
 
